@@ -25,38 +25,41 @@ app.use(
   })
 );
 
-// MongoDB Connection with fallback
+// MongoDB Connection - Optimized for Vercel
+let isConnected = false;
+
 const connectDB = async () => {
+  if (isConnected) {
+    console.log("Using existing MongoDB connection");
+    return;
+  }
+
   try {
     console.log("Attempting to connect to MongoDB...");
-    console.log("MONGODB_URI exists:", !!process.env.MONGODB_URI);
 
-    // Try Atlas connection first
-    if (
-      process.env.MONGODB_URI &&
-      process.env.MONGODB_URI.includes("mongodb+srv")
-    ) {
-      await mongoose.connect(process.env.MONGODB_URI, {
-        serverSelectionTimeoutMS: 30000,
-        socketTimeoutMS: 45000,
-        retryWrites: true,
-      });
-      console.log("✅ Connected to MongoDB Atlas successfully");
-    } else {
-      // Fallback to local MongoDB
-      await mongoose.connect("mongodb://localhost:27017/buildly");
-      console.log("✅ Connected to local MongoDB successfully");
-    }
+    const mongoUri =
+      process.env.MONGODB_URI || "mongodb://localhost:27017/buildly";
+    console.log("Connecting to:", mongoUri.replace(/:[^:@]+@/, ":****@")); // Hide password in logs
+
+    await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      maxPoolSize: 10,
+      minPoolSize: 2,
+    });
+
+    isConnected = true;
+    console.log("✅ Connected to MongoDB successfully");
   } catch (error) {
     console.error("❌ MongoDB connection error:", error.message);
-    console.error("Full error:", error);
-    console.log(
-      "⚠️ Server will continue running without database functionality"
-    );
+    throw error; // Throw error instead of silently continuing
   }
 };
 
-connectDB();
+// Connect on startup
+connectDB().catch((err) => {
+  console.error("Failed to connect to MongoDB on startup:", err.message);
+});
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -168,14 +171,10 @@ app.get("/chatbot", (req, res) => {
 // Authentication Routes
 app.post("/api/register", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    // Ensure database connection
+    await connectDB();
 
-    // Check if MongoDB is connected
-    if (mongoose.connection.readyState !== 1) {
-      return res.status(503).json({
-        error: "Database temporarily unavailable. Please try again later.",
-      });
-    }
+    const { username, email, password } = req.body;
 
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
@@ -202,14 +201,10 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    // Ensure database connection
+    await connectDB();
 
-    // Check if MongoDB is connected
-    if (mongoose.connection.readyState !== 1) {
-      return res.status(503).json({
-        error: "Database temporarily unavailable. Please try again later.",
-      });
-    }
+    const { email, password } = req.body;
 
     const user = await User.findOne({ email });
     if (!user) {
