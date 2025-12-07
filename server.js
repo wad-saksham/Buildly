@@ -28,33 +28,31 @@ app.use(
 // MongoDB Connection with fallback
 const connectDB = async () => {
   try {
+    console.log("Attempting to connect to MongoDB...");
+    console.log("MONGODB_URI exists:", !!process.env.MONGODB_URI);
+
     // Try Atlas connection first
     if (
       process.env.MONGODB_URI &&
       process.env.MONGODB_URI.includes("mongodb+srv")
     ) {
       await mongoose.connect(process.env.MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+        serverSelectionTimeoutMS: 30000,
         socketTimeoutMS: 45000,
+        retryWrites: true,
       });
-      console.log("Connected to MongoDB Atlas successfully");
+      console.log("✅ Connected to MongoDB Atlas successfully");
     } else {
       // Fallback to local MongoDB
-      await mongoose.connect("mongodb://localhost:27017/buildly", {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-      console.log("Connected to local MongoDB successfully");
+      await mongoose.connect("mongodb://localhost:27017/buildly");
+      console.log("✅ Connected to local MongoDB successfully");
     }
   } catch (error) {
-    console.error("MongoDB connection error:", error.message);
-    console.log("Server will continue running without database functionality");
-    console.log("To fix this:");
-    console.log("1. Check your MongoDB Atlas IP whitelist");
-    console.log("2. Verify your connection string");
-    console.log("3. Or install MongoDB locally");
+    console.error("❌ MongoDB connection error:", error.message);
+    console.error("Full error:", error);
+    console.log(
+      "⚠️ Server will continue running without database functionality"
+    );
   }
 };
 
