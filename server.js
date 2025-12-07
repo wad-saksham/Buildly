@@ -343,10 +343,15 @@ app.delete("/api/projects/:id", authMiddleware, async (req, res) => {
 app.get("/api/tasks", authMiddleware, async (req, res) => {
   try {
     const tasks = await Task.find({ createdBy: req.userId })
-      .populate("project", "name")
+      .populate({
+        path: "project",
+        select: "name",
+        strictPopulate: false,
+      })
       .sort({ createdAt: -1 });
     res.json(tasks);
   } catch (error) {
+    console.error("Task fetch error:", error);
     res.status(500).json({ error: "Failed to fetch tasks" });
   }
 });
