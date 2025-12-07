@@ -1,0 +1,425 @@
+/* Modern Buildly Theme - Elegant Black & White */
+
+:root {
+  --primary-dark: #000000;
+  --primary-gray: #1a1a1a;
+  --accent-gray: #2d2d2d;
+  --light-gray: #404040;
+  --neutral-50: #fafafa;
+  --neutral-100: #f5f5f5;
+  --neutral-200: #e5e5e5;
+  --neutral-300: #d4d4d4;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-900: #171717;
+  --success-green: #22c55e;
+  --warning-amber: #f59e0b;
+  --error-red: #ef4444;
+}
+
+/* Remove default link underlines */
+a {
+  text-decoration: none !important;
+}
+
+/* Smooth transitions for all elements */
+* {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modern gradient backgrounds */
+.gradient-bg-primary {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--accent-gray) 100%);
+}
+
+.gradient-bg-secondary {
+  background: linear-gradient(135deg, var(--neutral-800) 0%, var(--neutral-900) 100%);
+}
+
+.gradient-bg-accent {
+  background: linear-gradient(135deg, var(--light-gray) 0%, var(--primary-gray) 100%);
+}
+
+/* Glass morphism effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Modern button styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--accent-gray) 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, var(--accent-gray) 0%, var(--light-gray) 100%);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--primary-dark);
+  border: 2px solid var(--primary-dark);
+  padding: 10px 22px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: var(--primary-dark);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Modern input styles */
+.modern-input {
+  background: var(--neutral-50);
+  border: 2px solid var(--neutral-200);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 16px;
+  color: var(--neutral-800);
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.modern-input:focus {
+  outline: none;
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.modern-input::placeholder {
+  color: var(--neutral-400);
+}
+
+/* Modern select styles */
+.modern-select {
+  background: var(--neutral-50);
+  border: 2px solid var(--neutral-200);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 16px;
+  color: var(--neutral-800);
+  width: 100%;
+  cursor: pointer;
+}
+
+.modern-select:focus {
+  outline: none;
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Card styles */
+.modern-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--neutral-200);
+}
+
+.modern-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Status badges */
+.status-active {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--success-green);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-planning {
+  background: rgba(115, 115, 115, 0.1);
+  color: var(--neutral-600);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-completed {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--success-green);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-on-hold {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning-amber);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Animation classes */
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.fade-in-left {
+  animation: fadeInLeft 0.6s ease-out;
+}
+
+.fade-in-right {
+  animation: fadeInRight 0.6s ease-out;
+}
+
+.scale-in {
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Floating animation for hero elements */
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Progress bar */
+.progress-bar {
+  background: var(--neutral-200);
+  border-radius: 10px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, var(--primary-blue) 0%, var(--accent-teal) 100%);
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+/* Notification styles */
+.notification-success {
+  background: linear-gradient(135deg, var(--success-green) 0%, #10b981 100%);
+  color: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+}
+
+.notification-error {
+  background: linear-gradient(135deg, var(--error-red) 0%, #ef4444 100%);
+  color: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+}
+
+/* Sidebar modern styling */
+.sidebar-modern {
+  background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary-gray) 100%);
+  border-right: 1px solid var(--neutral-800);
+}
+
+/* Desktop sidebar - always visible and static */
+@media (min-width: 1024px) {
+  #sidebar {
+    transform: none !important;
+    position: static !important;
+  }
+
+  #mobileMenuOverlay {
+    display: none !important;
+  }
+}
+
+/* Mobile sidebar - hidden by default, slides in when open */
+@media (max-width: 1023px) {
+  #sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+  }
+
+  #sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+}
+
+.nav-item-modern {
+  color: var(--neutral-300);
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin: 4px 12px;
+  transition: all 0.3s ease;
+}
+
+.nav-item-modern:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transform: translateX(4px);
+}
+
+.nav-item-modern.active {
+  background: linear-gradient(135deg, var(--neutral-700) 0%, var(--neutral-600) 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Chat message styles */
+.chat-message-user {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--accent-gray) 100%);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 18px 18px 4px 18px;
+  max-width: 70%;
+  margin-left: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.chat-message-ai {
+  background: var(--neutral-100);
+  color: var(--neutral-800);
+  padding: 12px 16px;
+  border-radius: 18px 18px 18px 4px;
+  max-width: 70%;
+  border: 1px solid var(--neutral-200);
+}
+
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+
+/* Mobile-first base adjustments */
+@media (max-width: 768px) {
+  /* Buttons - keep reasonable size */
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 18px;
+    font-size: 14px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Inputs - larger for touch */
+  .modern-input,
+  .modern-select {
+    padding: 16px;
+    font-size: 16px; /* Prevents iOS zoom */
+    min-height: 52px;
+  }
+
+  /* Cards - reduced padding on mobile */
+  .modern-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  /* Sidebar mobile styles */
+  .sidebar-modern {
+    width: 280px;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-item-modern {
+    padding: 16px 20px;
+    margin: 6px 12px;
+    font-size: 16px;
+  }
+
+  /* Status badges */
+  .status-active,
+  .status-planning,
+  .status-review {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .modern-card {
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .modern-card:hover {
+    transform: none; /* Disable hover transform on mobile */
+  }
+}

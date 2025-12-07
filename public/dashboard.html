@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Buildly</title>
+    <link href="css/output.css" rel="stylesheet" />
+    <link href="css/animations.css" rel="stylesheet" />
+    <link href="css/modern-theme.css" rel="stylesheet" />
+    <link href="css/modal.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    style="
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: #334155;
+    "
+  >
+    <!-- Mobile Menu Overlay -->
+    <div
+      id="mobileMenuOverlay"
+      class="fixed inset-0 bg-black/50 z-40 hidden"
+      onclick="toggleMobileMenu()"
+    ></div>
+
+    <!-- Sidebar -->
+    <div class="flex h-screen">
+      <aside
+        id="sidebar"
+        class="w-64 sidebar-modern fixed lg:static inset-y-0 left-0 transition-transform duration-300 ease-in-out z-50"
+      >
+        <div class="p-6">
+          <h1 class="text-2xl font-bold text-white">
+            <span class="text-white">Build</span
+            ><span class="text-blue-500">ly</span>
+          </h1>
+        </div>
+
+        <nav class="mt-6">
+          <a
+            href="#dashboard"
+            class="nav-item nav-item-modern active flex items-center"
+          >
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Dashboard
+          </a>
+          <a
+            href="#projects"
+            class="nav-item nav-item-modern flex items-center"
+          >
+            <i class="fas fa-project-diagram mr-3"></i>
+            Projects
+          </a>
+          <a href="#tasks" class="nav-item nav-item-modern flex items-center">
+            <i class="fas fa-tasks mr-3"></i>
+            Task Board
+          </a>
+          <a href="/chatbot" class="nav-item nav-item-modern flex items-center">
+            <i class="fas fa-robot mr-3"></i>
+            AI Chatbot
+          </a>
+          <a
+            href="#calculator"
+            class="nav-item nav-item-modern flex items-center"
+          >
+            <i class="fas fa-calculator mr-3"></i>
+            Calculator
+          </a>
+          <a
+            href="#timeline"
+            class="nav-item nav-item-modern flex items-center"
+          >
+            <i class="fas fa-calendar-alt mr-3"></i>
+            Timeline
+          </a>
+          <a
+            href="#documents"
+            class="nav-item nav-item-modern flex items-center"
+          >
+            <i class="fas fa-file-alt mr-3"></i>
+            Documents
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 overflow-y-auto w-full lg:w-auto">
+        <!-- Header -->
+        <header
+          class="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 shadow-sm"
+        >
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <button
+                onclick="toggleMobileMenu()"
+                class="lg:hidden text-gray-600 hover:text-gray-800 focus:outline-none"
+              >
+                <i class="fas fa-bars text-2xl"></i>
+              </button>
+              <h2 class="text-xl sm:text-2xl font-bold text-gray-800">
+                Dashboard
+              </h2>
+            </div>
+            <div class="flex items-center space-x-2 sm:space-x-4">
+              <div class="hidden sm:flex items-center space-x-3">
+                <span id="userWelcome" class="font-semibold text-gray-700"
+                  >Welcome back!</span
+                >
+              </div>
+              <button
+                onclick="logout()"
+                class="px-2 sm:px-4 py-2 text-gray-500 hover:text-red-500 transition-colors font-medium text-sm sm:text-base"
+              >
+                <i class="fas fa-sign-out-alt sm:mr-2"></i
+                ><span class="hidden sm:inline">Logout</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div id="content" class="p-4 sm:p-6">
+          <!-- Stats Cards -->
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8"
+          >
+            <div
+              class="modern-card fade-in-up"
+              style="
+                background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                color: white;
+              "
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-100 text-sm font-medium">
+                    Active Projects
+                  </p>
+                  <p class="text-3xl font-bold" id="activeProjects">0</p>
+                  <p class="text-gray-200 text-xs mt-1">
+                    Start your first project
+                  </p>
+                </div>
+                <i class="fas fa-project-diagram text-3xl text-gray-200"></i>
+              </div>
+            </div>
+
+            <div
+              class="modern-card fade-in-up"
+              style="
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                color: white;
+                animation-delay: 0.1s;
+              "
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-green-100 text-sm font-medium">
+                    Completed Tasks
+                  </p>
+                  <p class="text-3xl font-bold" id="completedTasks">0</p>
+                  <p class="text-green-200 text-xs mt-1">
+                    No tasks completed yet
+                  </p>
+                </div>
+                <i class="fas fa-check-circle text-3xl text-green-200"></i>
+              </div>
+            </div>
+
+            <div
+              class="modern-card fade-in-up"
+              style="
+                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                color: white;
+                animation-delay: 0.2s;
+              "
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-yellow-100 text-sm font-medium">
+                    Team Members
+                  </p>
+                  <p class="text-3xl font-bold" id="teamMembers">1</p>
+                  <p class="text-yellow-200 text-xs mt-1">Just you for now</p>
+                </div>
+                <i class="fas fa-users text-3xl text-yellow-200"></i>
+              </div>
+            </div>
+
+            <div
+              class="modern-card fade-in-up"
+              style="
+                background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+                color: white;
+                animation-delay: 0.3s;
+              "
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-purple-100 text-sm font-medium">
+                    Completion Rate
+                  </p>
+                  <p class="text-3xl font-bold" id="completionRate">0%</p>
+                  <p class="text-purple-200 text-xs mt-1">
+                    Create tasks to track progress
+                  </p>
+                </div>
+                <i class="fas fa-chart-line text-3xl text-purple-200"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Welcome Message for New Users -->
+          <div
+            class="modern-card fade-in-up mb-6"
+            style="
+              background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+              border: 2px solid #0ea5e9;
+            "
+          >
+            <div class="flex items-center">
+              <div
+                class="w-16 h-16 bg-gradient-to-r from-gray-700 to-black rounded-full flex items-center justify-center mr-4"
+              >
+                <i class="fas fa-rocket text-white text-2xl"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">
+                  Welcome to <span class="text-gray-800">Build</span
+                  ><span class="text-blue-500">ly</span>!
+                </h3>
+                <p class="text-gray-600 mb-3">
+                  Get started by creating your first project or exploring our AI
+                  assistant for construction help.
+                </p>
+                <div class="flex space-x-3">
+                  <button
+                    onclick="loadPage('projects')"
+                    class="btn-primary px-4 py-2 text-sm"
+                  >
+                    <i class="fas fa-plus mr-2"></i>Create Project
+                  </button>
+                  <button
+                    onclick="loadPage('ai-assistant')"
+                    class="btn-secondary px-4 py-2 text-sm"
+                  >
+                    <i class="fas fa-robot mr-2"></i>Try AI Assistant
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="modern-card fade-in-right">
+            <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6">
+              Quick Actions
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <button
+                onclick="loadPage('projects')"
+                class="p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:from-blue-100 hover:to-blue-200 transition-all duration-300 transform hover:scale-105 text-left group"
+              >
+                <i
+                  class="fas fa-plus text-xl sm:text-2xl text-blue-600 mb-2 sm:mb-3 group-hover:scale-110 transition-transform"
+                ></i>
+                <p class="font-semibold text-gray-800 text-sm sm:text-base">
+                  New Project
+                </p>
+                <p class="text-gray-600 text-xs sm:text-sm">
+                  Start a new construction project
+                </p>
+              </button>
+
+              <button
+                onclick="loadPage('team')"
+                class="p-4 sm:p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:from-green-100 hover:to-green-200 transition-all duration-300 transform hover:scale-105 text-left group"
+              >
+                <i
+                  class="fas fa-user-plus text-xl sm:text-2xl text-green-600 mb-2 sm:mb-3 group-hover:scale-110 transition-transform"
+                ></i>
+                <p class="font-semibold text-gray-800 text-sm sm:text-base">
+                  Add Team Member
+                </p>
+                <p class="text-gray-600 text-xs sm:text-sm">
+                  Invite new team members
+                </p>
+              </button>
+
+              <button
+                onclick="loadPage('ai-assistant')"
+                class="p-4 sm:p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl hover:from-purple-100 hover:to-purple-200 transition-all duration-300 transform hover:scale-105 text-left group"
+              >
+                <i
+                  class="fas fa-robot text-xl sm:text-2xl text-purple-600 mb-2 sm:mb-3 group-hover:scale-110 transition-transform"
+                ></i>
+                <p class="font-semibold text-gray-800 text-sm sm:text-base">
+                  AI Assistant
+                </p>
+                <p class="text-gray-600 text-xs sm:text-sm">
+                  Get construction help
+                </p>
+              </button>
+
+              <button
+                onclick="loadPage('calculator')"
+                class="p-4 sm:p-6 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl hover:from-orange-100 hover:to-orange-200 transition-all duratioransform hover:scale-105 text-left group"
+              >
+                <i
+                  class="fas fa-calculator text-2xl text-orange-600 mb-3 group-hover:scale-110 transition-transform"
+                ></i>
+                <p class="font-semibold text-gray-800">
+                  Construction Calculator
+                </p>
+                <p class="text-gray-600 text-sm">Calculate materials needed</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>
