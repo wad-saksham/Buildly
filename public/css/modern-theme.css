@@ -291,6 +291,8 @@ a {
 .sidebar-modern {
   background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary-gray) 100%);
   border-right: 1px solid var(--neutral-800);
+  min-height: 100vh;
+  height: 100%;
 }
 
 /* Desktop sidebar - always visible and static */
