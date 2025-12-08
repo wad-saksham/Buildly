@@ -158,6 +158,30 @@ document.addEventListener("DOMContentLoaded", function () {
     const showWelcome = projects.length === 0 && tasks.length === 0;
 
     content.innerHTML = `
+            ${
+              showWelcome
+                ? `
+            <!-- Welcome Message for New Users -->
+            <div class="modern-card fade-in-up mb-4 sm:mb-6" style="background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%); border: 2px solid #404040;">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-gray-700 to-black rounded-full flex items-center justify-center mb-3 sm:mb-0 sm:mr-4 flex-shrink-0">
+                        <i class="fas fa-rocket text-white text-xl sm:text-2xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2">Welcome to <span class="text-gray-800">Build</span><span class="text-blue-500">ly</span>!</h3>
+                        <p class="text-gray-600 mb-3 text-sm sm:text-base">Get started by creating your first project or exploring our AI assistant for construction help.</p>
+                        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                            <button onclick="loadPage('projects')" class="btn-primary px-4 py-2 text-sm">
+                                <i class="fas fa-plus mr-2"></i>Create Project
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `
+                : ""
+            }
+
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
                 <div class="modern-card fade-in-up" style="background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%); color: white;">
@@ -193,30 +217,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 </div>
             </div>
-
-            ${
-              showWelcome
-                ? `
-            <!-- Welcome Message for New Users -->
-            <div class="modern-card fade-in-up mb-4 sm:mb-6" style="background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%); border: 2px solid #404040;">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center">
-                    <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-gray-700 to-black rounded-full flex items-center justify-center mb-3 sm:mb-0 sm:mr-4 flex-shrink-0">
-                        <i class="fas fa-rocket text-white text-xl sm:text-2xl"></i>
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2">Welcome to Buildly!</h3>
-                        <p class="text-gray-600 mb-3 text-sm sm:text-base">Get started by creating your first project or exploring our AI assistant for construction help.</p>
-                        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                            <button onclick="loadPage('projects')" class="btn-primary px-4 py-2 text-sm">
-                                <i class="fas fa-plus mr-2"></i>Create Project
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            `
-                : ""
-            }
 
             <!-- Quick Actions -->
             <div class="modern-card fade-in-right">
