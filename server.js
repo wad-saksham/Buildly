@@ -175,8 +175,11 @@ app.post("/api/register", async (req, res) => {
     await connectDB();
 
     const { username, email, password } = req.body;
+    const emailLower = email.toLowerCase();
 
-    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+    const existingUser = await User.findOne({
+      $or: [{ email: emailLower }, { username }],
+    });
     if (existingUser) {
       return res.status(400).json({ error: "User already exists" });
     }
@@ -184,7 +187,7 @@ app.post("/api/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       username,
-      email,
+      email: emailLower,
       password: hashedPassword,
       role: "builder", // Default role
       company: "",
@@ -206,13 +209,15 @@ app.post("/api/login", async (req, res) => {
 
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
+      console.log("User not found for email:", email);
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log("Password mismatch for user:", email);
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
