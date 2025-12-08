@@ -463,9 +463,6 @@ app.delete("/api/activities", authMiddleware, async (req, res) => {
   }
 });
 
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
 // Chat endpoint
 app.post("/api/chat", async (req, res) => {
   try {
@@ -475,17 +472,26 @@ app.post("/api/chat", async (req, res) => {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    if (!process.env.GEMINI_API_KEY) {
-      return res.status(500).json({ error: "AI service not configured" });
+    // Check if API key exists
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.error("GEMINI_API_KEY not found in environment variables");
+      return res
+        .status(500)
+        .json({
+          error: "AI service not configured. Please contact administrator.",
+        });
     }
 
-    // Use Gemini Pro model (more stable)
+    // Initialize Gemini AI for each request (better for serverless)
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
     // Generate response with construction context
     const prompt = `You are a helpful AI assistant for construction project management. Answer the following question: ${message}`;
+
     const result = await model.generateContent(prompt);
-    const response = result.response;
+    const response = await result.response;
     const aiReply = response.text();
 
     res.json({
@@ -493,10 +499,17 @@ app.post("/api/chat", async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error("Chat Error:", error.message);
+    console.error("Chat Error:", error);
+    console.error("Error details:", {
+      message: error.message,
+      stack: error.stack,
+      name: error.name,
+    });
+
     res.status(500).json({
-      error: "Failed to get response from AI",
-      details: error.message,
+      error: "Sorry, I encountered an error. Please try again.",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
 });
