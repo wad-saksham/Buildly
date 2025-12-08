@@ -216,11 +216,9 @@ app.post("/api/login", async (req, res) => {
       await connectDB();
     } catch (dbError) {
       console.error("Database connection failed:", dbError);
-      return res
-        .status(503)
-        .json({
-          error: "Database temporarily unavailable. Please try again later.",
-        });
+      return res.status(503).json({
+        error: "Database temporarily unavailable. Please try again later.",
+      });
     }
 
     const { email, password } = req.body;
@@ -481,11 +479,12 @@ app.post("/api/chat", async (req, res) => {
       return res.status(500).json({ error: "AI service not configured" });
     }
 
-    // Use Gemini 2.0 Flash model
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    // Use Gemini Pro model (more stable)
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-    // Generate response
-    const result = await model.generateContent(message);
+    // Generate response with construction context
+    const prompt = `You are a helpful AI assistant for construction project management. Answer the following question: ${message}`;
+    const result = await model.generateContent(prompt);
     const response = result.response;
     const aiReply = response.text();
 
