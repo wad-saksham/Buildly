@@ -172,7 +172,14 @@ app.get("/chatbot", (req, res) => {
 app.post("/api/register", async (req, res) => {
   try {
     // Ensure database connection
-    await connectDB();
+    try {
+      await connectDB();
+    } catch (dbError) {
+      console.error("Database connection failed:", dbError);
+      return res.status(503).json({
+        error: "Database temporarily unavailable. Please try again later.",
+      });
+    }
 
     const { username, email, password } = req.body;
     const emailLower = email.toLowerCase();
@@ -205,7 +212,16 @@ app.post("/api/register", async (req, res) => {
 app.post("/api/login", async (req, res) => {
   try {
     // Ensure database connection
-    await connectDB();
+    try {
+      await connectDB();
+    } catch (dbError) {
+      console.error("Database connection failed:", dbError);
+      return res
+        .status(503)
+        .json({
+          error: "Database temporarily unavailable. Please try again later.",
+        });
+    }
 
     const { email, password } = req.body;
 
