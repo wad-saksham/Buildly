@@ -3,362 +3,271 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Chatbot - Buildly</title>
+    <title>AI Assistant - Buildly</title>
     <link href="css/output.css" rel="stylesheet" />
+    <link href="css/animations.css" rel="stylesheet" />
+    <link href="css/modern-theme.css" rel="stylesheet" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
     <style>
-      body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-      }
-
       .chat-container {
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(20px);
-        border-radius: 24px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        overflow: hidden;
+        height: calc(100vh - 180px);
+        display: flex;
+        flex-direction: column;
       }
-
-      .chat-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 24px;
-        color: white;
-      }
-
-      .chat-messages {
-        background: #f8f9fa;
-        min-height: 500px;
-        max-height: 500px;
+      .messages-container {
+        flex: 1;
         overflow-y: auto;
-        padding: 24px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
       }
-
-      .chat-messages::-webkit-scrollbar {
-        width: 8px;
+      .message {
+        max-width: 70%;
+        padding: 1rem 1.25rem;
+        border-radius: 1rem;
+        animation: slideIn 0.3s ease-out;
       }
-
-      .chat-messages::-webkit-scrollbar-track {
-        background: #e9ecef;
-        border-radius: 10px;
-      }
-
-      .chat-messages::-webkit-scrollbar-thumb {
-        background: #667eea;
-        border-radius: 10px;
-      }
-
-      .message-user {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      .user-message {
+        align-self: flex-end;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
         color: white;
-        padding: 14px 20px;
-        border-radius: 20px 20px 4px 20px;
-        max-width: 70%;
-        margin-left: auto;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        animation: slideInRight 0.3s ease-out;
+        border-bottom-right-radius: 0.25rem;
+        box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
       }
-
-      .message-ai {
+      .bot-message {
+        align-self: flex-start;
         background: white;
-        color: #2d3748;
-        padding: 14px 20px;
-        border-radius: 20px 20px 20px 4px;
-        max-width: 70%;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        color: #334155;
+        border-bottom-left-radius: 0.25rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border: 1px solid #e2e8f0;
-        animation: slideInLeft 0.3s ease-out;
       }
-
-      @keyframes slideInRight {
-        from {
-          opacity: 0;
-          transform: translateX(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-
-      @keyframes slideInLeft {
-        from {
-          opacity: 0;
-          transform: translateX(-20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-
-      .chat-input-container {
-        background: white;
-        padding: 20px 24px;
-        border-top: 1px solid #e2e8f0;
-      }
-
-      .chat-input {
-        background: #f8f9fa;
-        border: 2px solid #e2e8f0;
-        border-radius: 16px;
-        padding: 14px 20px;
-        font-size: 15px;
-        transition: all 0.3s ease;
-        width: 100%;
-      }
-
-      .chat-input:focus {
-        outline: none;
-        border-color: #667eea;
-        background: white;
-        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-      }
-
-      .send-button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 16px;
-        padding: 14px 28px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-      }
-
-      .send-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-      }
-
-      .send-button:active {
-        transform: translateY(0);
-      }
-
-      .send-button:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-      }
-
       .typing-indicator {
         display: flex;
-        gap: 6px;
-        padding: 12px 16px;
+        gap: 0.4rem;
+        padding: 1rem;
       }
-
       .typing-dot {
         width: 8px;
         height: 8px;
-        background: #667eea;
         border-radius: 50%;
+        background: #3b82f6;
         animation: typing 1.4s infinite;
       }
-
       .typing-dot:nth-child(2) {
         animation-delay: 0.2s;
       }
-
       .typing-dot:nth-child(3) {
         animation-delay: 0.4s;
       }
-
       @keyframes typing {
-        0%,
-        60%,
-        100% {
+        0%, 60%, 100% {
           transform: translateY(0);
-          opacity: 0.7;
         }
         30% {
           transform: translateY(-10px);
-          opacity: 1;
         }
       }
-
-      .welcome-icon {
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 50%;
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .input-container {
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        padding: 1.5rem;
+        box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.05);
+      }
+      .send-button {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        transition: all 0.3s ease;
+      }
+      .send-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+      }
+      .send-button:disabled {
+        background: #cbd5e1;
+        cursor: not-allowed;
+        transform: scale(1);
+      }
+      .empty-state {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 20px;
-        animation: pulse 2s infinite;
+        height: 100%;
+        color: #94a3b8;
       }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
-        }
-        50% {
-          box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
-        }
-      }
-
-      /* Mobile Responsive Styles */
-      @media (max-width: 768px) {
-        body {
-          padding: 0;
-        }
-
-        .chat-container {
-          border-radius: 0;
-          height: 100vh;
-          max-width: 100%;
-          display: flex;
-          flex-direction: column;
-        }
-
-        .chat-header {
-          padding: 16px;
-          border-radius: 0;
-        }
-
-        .chat-header h1 {
-          font-size: 1.25rem;
-        }
-
-        .chat-header p {
-          font-size: 0.75rem;
-        }
-
-        .chat-messages {
-          flex: 1;
-          min-height: 0;
-          max-height: none;
-          padding: 16px;
-        }
-
-        .message-user,
-        .message-ai {
-          max-width: 85%;
-          padding: 12px 16px;
-        }
-
-        .chat-input-container {
-          padding: 12px 16px;
-          padding-bottom: max(12px, env(safe-area-inset-bottom));
-        }
-
-        .chat-input {
-          padding: 14px 16px;
-          font-size: 16px;
-          border-radius: 12px;
-        }
-
-        .send-button {
-          padding: 14px 20px;
-          border-radius: 12px;
-          min-width: 80px;
-        }
-
-        .welcome-icon {
-          width: 60px;
-          height: 60px;
-        }
-
-        .welcome-icon i {
-          font-size: 1.75rem;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .chat-header {
-          padding: 12px;
-        }
-
-        .chat-header .flex {
-          flex-wrap: wrap;
-          gap: 8px;
-        }
-
-        .chat-header a {
-          font-size: 0.875rem;
-        }
-
-        .chat-header button {
-          padding: 8px 12px;
-          font-size: 0.875rem;
-        }
-
-        .chat-input-container .flex {
-          flex-direction: column;
-          gap: 10px;
-        }
-
-        .send-button {
-          width: 100%;
-        }
+      .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        color: #cbd5e1;
       }
     </style>
   </head>
-  <body class="min-h-screen flex items-center justify-center p-6">
-    <div class="chat-container w-full max-w-4xl">
-      <!-- Header -->
-      <div class="chat-header">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <a
-              href="/dashboard"
-              class="text-white/80 hover:text-white transition-colors"
-            >
-              <i class="fas fa-arrow-left mr-2"></i>Back
-            </a>
-            <div class="h-6 w-px bg-white/30"></div>
-            <div>
-              <h1 class="text-2xl font-bold flex items-center">
-                <i class="fas fa-robot mr-3"></i>AI Assistant
-              </h1>
-              <p class="text-white/80 text-sm mt-1">Powered by Google Gemini</p>
+  <body
+    style="
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: #334155;
+    "
+  >
+    <!-- Mobile Menu Overlay -->
+    <div
+      id="mobileMenuOverlay"
+      class="fixed inset-0 bg-black/50 z-40 hidden"
+      onclick="toggleMobileMenu()"
+    ></div>
+
+    <!-- Sidebar -->
+    <div class="flex h-screen">
+      <aside
+        id="sidebar"
+        class="w-64 sidebar-modern fixed lg:static inset-y-0 left-0 transition-transform duration-300 ease-in-out z-50"
+      >
+        <div class="p-6">
+          <h1 class="text-2xl font-bold text-white">
+            <span class="text-white">Build</span
+            ><span class="text-blue-500">ly</span>
+          </h1>
+        </div>
+
+        <nav class="mt-6">
+          <a
+            href="/dashboard.html"
+            class="nav-item nav-item-modern flex items-center"
+          >
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Dashboard
+          </a>
+          <a
+            href="/dashboard.html#projects"
+            class="nav-item nav-item-modern flex items-center"
+          >
+            <i class="fas fa-project-diagram mr-3"></i>
+            Projects
+          </a>
+          <a
+            href="/dashboard.html#tasks"
+            class="nav-item nav-item-modern flex items-center"
+          >
+            <i class="fas fa-tasks mr-3"></i>
+            Task Board
+          </a>
+          <a
+            href="/chatbot.html"
+            class="nav-item nav-item-modern active flex items-center"
+          >
+            <i class="fas fa-robot mr-3"></i>
+            AI Assistant
+          </a>
+          <a
+            href="/dashboard.html#calculator"
+            class="nav-item nav-item-modern flex items-center"
+          >
+            <i class="fas fa-calculator mr-3"></i>
+            Calculator
+          </a>
+          <a
+            href="/dashboard.html#timeline"
+            class="nav-item nav-item-modern flex items-center"
+          >
+            <i class="fas fa-calendar-alt mr-3"></i>
+            Timeline
+          </a>
+          <a
+            href="/dashboard.html#documents"
+            class="nav-item nav-item-modern flex items-center"
+          >
+            <i class="fas fa-file-alt mr-3"></i>
+            Documents
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 overflow-hidden w-full lg:w-auto">
+        <!-- Header -->
+        <header
+          class="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 shadow-sm"
+        >
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <button
+                onclick="toggleMobileMenu()"
+                class="lg:hidden text-gray-600 hover:text-gray-800 focus:outline-none"
+              >
+                <i class="fas fa-bars text-2xl"></i>
+              </button>
+              <i class="fas fa-robot text-2xl text-blue-500"></i>
+              <h2 class="text-xl sm:text-2xl font-bold text-gray-800">
+                AI Assistant
+              </h2>
+            </div>
+            <div class="flex items-center space-x-2 sm:space-x-4">
+              <button
+                onclick="clearChat()"
+                class="px-3 sm:px-4 py-2 text-gray-500 hover:text-blue-500 transition-colors font-medium text-sm sm:text-base"
+              >
+                <i class="fas fa-trash-alt sm:mr-2"></i
+                ><span class="hidden sm:inline">Clear Chat</span>
+              </button>
+              <button
+                onclick="logout()"
+                class="px-2 sm:px-4 py-2 text-gray-500 hover:text-red-500 transition-colors font-medium text-sm sm:text-base"
+              >
+                <i class="fas fa-sign-out-alt sm:mr-2"></i
+                ><span class="hidden sm:inline">Logout</span>
+              </button>
             </div>
           </div>
-          <button
-            onclick="clearChat()"
-            class="text-white/80 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/10"
-          >
-            <i class="fas fa-trash mr-2"></i>Clear
-          </button>
-        </div>
-      </div>
+        </header>
 
-      <!-- Chat Messages -->
-      <div id="chatMessages" class="chat-messages">
-        <!-- Welcome Message -->
-        <div class="text-center py-12">
-          <div class="welcome-icon">
-            <i class="fas fa-robot text-white text-4xl"></i>
+        <!-- Chat Container -->
+        <div class="chat-container">
+          <!-- Messages -->
+          <div id="messagesContainer" class="messages-container">
+            <div class="empty-state" id="emptyState">
+              <i class="fas fa-comments"></i>
+              <h3 class="text-xl font-semibold mb-2">Start a Conversation</h3>
+              <p class="text-center max-w-md">
+                Ask me anything! I'm here to help with your construction
+                projects, answer questions, and provide assistance.
+              </p>
+            </div>
           </div>
-          <h2 class="text-2xl font-bold text-gray-800 mb-2">
-            Hello! I'm your AI Assistant
-          </h2>
-          <p class="text-gray-600">
-            Ask me anything and I'll do my best to help you.
-          </p>
-        </div>
-      </div>
 
-      <!-- Input Area -->
-      <div class="chat-input-container">
-        <div class="flex space-x-3">
-          <input
-            type="text"
-            id="chatInput"
-            placeholder="Type your message here..."
-            class="chat-input"
-            onkeypress="handleKeyPress(event)"
-          />
-          <button onclick="sendMessage()" class="send-button" id="sendButton">
-            <i class="fas fa-paper-plane mr-2"></i>Send
-          </button>
+          <!-- Input Container -->
+          <div class="input-container">
+            <form id="chatForm" class="flex gap-2">
+              <input
+                type="text"
+                id="messageInput"
+                placeholder="Type your message here..."
+                class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                autocomplete="off"
+              />
+              <button
+                type="submit"
+                id="sendButton"
+                class="send-button px-6 py-3 text-white rounded-lg font-medium"
+              >
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
 
     <script src="js/chatbot.js"></script>

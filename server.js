@@ -463,53 +463,51 @@ app.delete("/api/activities", authMiddleware, async (req, res) => {
   }
 });
 
-// Chat endpoint
+// AI Chatbot endpoint
 app.post("/api/chat", async (req, res) => {
   try {
     const { message } = req.body;
 
-    if (!message || typeof message !== "string") {
-      return res.status(400).json({ error: "Message is required" });
+    // Validate input
+    if (!message || message.trim() === "") {
+      return res.status(400).json({
+        error: "Message is required",
+        reply: "Please provide a message.",
+      });
     }
 
-    // Check if API key exists
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      console.error("GEMINI_API_KEY not found in environment variables");
-      return res
-        .status(500)
-        .json({
-          error: "AI service not configured. Please contact administrator.",
-        });
+    // Check API key
+    if (!process.env.GEMINI_API_KEY) {
+      console.error("GEMINI_API_KEY is not configured");
+      return res.status(500).json({
+        error: "API key not configured",
+        reply: "The chatbot is not properly configured.",
+      });
     }
 
-    // Initialize Gemini AI for each request (better for serverless)
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    console.log("Received message:", message);
 
-    // Generate response with construction context
-    const prompt = `You are a helpful AI assistant for construction project management. Answer the following question: ${message}`;
+    // Initialize Gemini AI
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.5-flash"
+    });
 
-    const result = await model.generateContent(prompt);
+    // Generate response
+    const result = await model.generateContent(message);
     const response = await result.response;
-    const aiReply = response.text();
+    const reply = response.text();
 
-    res.json({
-      reply: aiReply,
-      timestamp: new Date().toISOString(),
-    });
+    console.log("Successfully generated response");
+
+    // Send response
+    res.json({ reply });
   } catch (error) {
-    console.error("Chat Error:", error);
-    console.error("Error details:", {
-      message: error.message,
-      stack: error.stack,
-      name: error.name,
-    });
+    console.error("Chat error:", error.message);
 
     res.status(500).json({
-      error: "Sorry, I encountered an error. Please try again.",
-      details:
-        process.env.NODE_ENV === "development" ? error.message : undefined,
+      error: error.message || "An error occurred",
+      reply: "Sorry, I encountered an error. Please try again.",
     });
   }
 });
