@@ -19,16 +19,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("mobileMenuOverlay");
 
-    if (sidebar.classList.contains("-translate-x-full")) {
-      sidebar.classList.remove("-translate-x-full");
-      sidebar.classList.add("translate-x-0");
-      overlay.classList.remove("hidden");
-      document.body.style.overflow = "hidden";
-    } else {
-      sidebar.classList.add("-translate-x-full");
-      sidebar.classList.remove("translate-x-0");
+    if (sidebar.classList.contains("sidebar-open")) {
+      sidebar.classList.remove("sidebar-open");
       overlay.classList.add("hidden");
       document.body.style.overflow = "";
+    } else {
+      sidebar.classList.add("sidebar-open");
+      overlay.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
     }
   };
 
@@ -37,8 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("mobileMenuOverlay");
     if (window.innerWidth < 1024) {
-      sidebar.classList.add("-translate-x-full");
-      sidebar.classList.remove("translate-x-0");
+      sidebar.classList.remove("sidebar-open");
       overlay.classList.add("hidden");
       document.body.style.overflow = "";
     }
